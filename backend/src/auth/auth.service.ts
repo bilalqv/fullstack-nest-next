@@ -19,12 +19,15 @@ export class AuthService {
         const userData: userData = req.body;
         const existingUser = await this.userService.findOneByEmail(userData.email);
         if (existingUser) {
-            return res.send({ message: 'User already exists' });
+            return res.send({
+                success: false,
+                message: 'Email already exists',
+            });
         }
         userData.password = await bcrypt.hash(userData.password, 10);
         const user = await this.userService.create(userData);
         return res.send({
-            status: 'success',
+            success: true,
             message: 'Registered',
         });
     }
@@ -33,19 +36,25 @@ export class AuthService {
         const { email, password } = req.body;
         const user = await this.userService.findOneByEmail(email);
         if (!user) {
-            return res.send({ message: 'User not found' });
+            return res.send({
+                success: false,
+                message: 'Email not found',
+            });
         };
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.send({ message: 'Password is incorrect' });
+            return res.send({
+                success: false,
+                message: 'Incorrect password',
+            });
         }
 
         const payload = { email: user.email, id: user.id };
         const token = await this.jwtService.signAsync(payload);
         delete user.password;
         return res.send({
-            status: 'success',
+            success: true,
             message: 'Logged in',
             name: user.firstName + ' ' + user.lastName,
             email: user.email,

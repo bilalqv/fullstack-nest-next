@@ -1,0 +1,15 @@
+version: '3'
+services:
+  nest-backend:
+    container_name: nest-backend
+    # this is the path to the Dockerfile
+    build: .
+    ports:
+      - "4000:3003"
+    volumes:
+      - ./:/nest-app
+      - /nest-app/node_modules
+    # environment:
+    #   - PORT=3003
+    env_file:
+      - ./.env

@@ -13,6 +13,7 @@ async function getData() {
                 authorization: `Bearer ${session?.user?.accessToken}`,
             }
         });
+
         const data = await res.json();
         return data;
     } catch (err) {
@@ -27,7 +28,7 @@ export default async function UsersData() {
         <div className="border rounded-md p-4 bg-gray-50">
             <p className="font-bold">Users Data</p>
             {
-                (data && data.status == 'success') ? (
+                (data && data.success) ? (
                     data.data.map((person: any, id: any) => (
                         <div key={id} className='flex space-x-3 py-4 my-2'>
                             <p> {person.id} </p>

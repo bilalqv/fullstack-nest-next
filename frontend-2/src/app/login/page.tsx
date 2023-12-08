@@ -1,40 +1,69 @@
 'use client'
+import LoginForm from "@/components/forms/login";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const ZSignInFormSchema = z.object({
+    email: z.string().email().min(1),
+    password: z.string().min(6),
+});
+
+type TSignInFormSchema = z.infer<typeof ZSignInFormSchema>;
 
 export default function Login() {
-    const email = useRef('');
-    const password = useRef('');
-    const [data, setData] = useState('');
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const { toast } = useToast();
 
-    function handleLogin(e: any) {
-        e.preventDefault();
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm<TSignInFormSchema>({
+        resolver: zodResolver(ZSignInFormSchema),
+    })
 
-        signIn('credentials', {
-            email: email.current,
-            password: password.current,
-            redirect: true,
-            callbackUrl: '/dashboard',
-        });
+    function handleLogin({ email, password }: TSignInFormSchema) {
+
+        try {
+            signIn('credentials', {
+                email,
+                password,
+                redirect: true,
+                callbackUrl: '/dashboard',
+            });
+
+            toast({
+                title: 'Logged in.',
+                description: "You've been logged in.",
+            });
+        } catch (err) {
+            toast({
+                title: 'Something went wrong.',
+                description: "Unable to log you in.",
+                variant: 'destructive'
+            });
+        }
     }
 
+    // text-center flex justify-center flex-col  min-h-screen p-0
+
     return (
-        <main className="flex min-h-screen flex-col items-center p-24">
-            <p>Login</p>
-            <div >
-                <form onSubmit={handleLogin} className=' space-y-3'>
-                    <div>
-                        <label className=' block'>Email: </label>
-                        <input onChange={e => email.current = e.target.value} className='p-2 rounded-md  focus:border-blue-100 focus:ring-blue-500' type="email" name="email" />
-                    </div>
-                    <div>
-                        <label className=' block'>Password: </label>
-                        <input onChange={e => password.current = e.target.value} className='p-2 rounded-md focus:border-blue-100 focus:ring-blue-500' type="password" name="password" />
-                    </div>
-                    <button className=' bg-gray-50 p-2 rounded-md hover:bg-gray-100 w-max mx-auto' type="submit">Login</button>
-                </form>
+        <main className="flex max-h-screen flex-col items-center justify-center">
+            <div className="">
+                <p className=" text-center font-bold mb-3 text-lg">Login</p>
+
+                <LoginForm />
+
+                <p className="mt-4">Not Registered? <Link href='/register' className=" text-green-700">Register</Link> </p>
             </div>
-            <p> {data} </p>
         </main>
     )
 }

@@ -1,0 +1,15 @@
+# contains shared configuration for various docker-compose files
+version: '3'
+services:
+  nest-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: development
+    volumes:
+      - ./:/nest-app
+      - /nest-app/node_modules
+    env_file:
+      - ./.env.development
+    command: npm run start:dev
+  

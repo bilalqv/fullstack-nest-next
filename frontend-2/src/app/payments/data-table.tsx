@@ -88,11 +88,11 @@ export function DataTable<TData, TValue>({
     console.log(sorting);
     return (
         <div>
-            {/* <p>{table.getTotalSize()}</p> */}
+            <div className="flex mb-2">
+                <Input type="text" placeholder="search..." value={globalFilter} onChange={e => setGlobalFilter(e.target.value)} className="mx-auto w-max" />
+            </div>
             <div className="rounded-md border">
-                <div className="flex">
-                    <Input type="text" placeholder="search..." value={globalFilter} onChange={e => setGlobalFilter(e.target.value)} className="mx-auto w-max" />
-                </div>
+
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (

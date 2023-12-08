@@ -24,13 +24,8 @@ export const authOptions: NextAuthOptions = {
                         },
                         body: JSON.stringify(credentials)
                     });
-                    // {
-                    //     id: 123,
-                    //     name: "John Doe",
-                    //     accessToken: "ABC.123.XYZ",
-                    // }
                     const data = await res.json();
-                    if (data && data.status === "success") {
+                    if (data && data.success) {
                         return data;
                     } else {
                         return null;

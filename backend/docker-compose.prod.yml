@@ -1,0 +1,11 @@
+# contains shared configuration for various docker-compose files
+version: '3'
+services:
+  nest-app:
+    build:
+      context: .
+      args:
+        NODE_ENV: production
+    env_file:
+      - ./.env.production
+    command: npm run start

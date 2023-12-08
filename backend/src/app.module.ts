@@ -13,10 +13,10 @@ import { UsersModule } from './users/users.module';
   imports: [AuthModule, ConfigModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'mysql',
-      host: 'localhost',
+      host: 'localhost', // docker **
       port: 3306,
-      username: 'user1',
-      password: '9876@sql',
+      username: 'user1', // docker **
+      password: '9876@sql', // docker **
       database: 'nest_next_fullstack_1',
       models: [User],
       autoLoadModels: true,

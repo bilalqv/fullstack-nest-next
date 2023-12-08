@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Navbar from '@/components/NabBar'
+import Navbar from '@/components/NavBar'
 import { getServerSession } from 'next-auth'
 import SessionProvider from '@/components/SessionProvider'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/toaster'
+import { Separator } from '@/components/ui/separator'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,12 +27,14 @@ export default async function RootLayout({
         <SessionProvider session={session} >
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
+            defaultTheme="syatem"
             enableSystem
             disableTransitionOnChange
           >
             <Navbar />
+            <Separator className="my-14" />
             {children}
+            <Toaster />
           </ThemeProvider>
         </SessionProvider>
       </body>

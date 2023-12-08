@@ -8,8 +8,8 @@ export class AuthController {
     constructor(private readonly authService: AuthService) { }
 
     @Post('register')
-    register(): any {
-        // return this.authService.register(req, res);
+    register(@Req() req, @Res() res): any {
+        return this.authService.register(req, res);
         return {
             status: 'success',
             message: 'Registered',
@@ -26,7 +26,7 @@ export class AuthController {
         return this.authService.logout(req, res);
     }
 
-    @UseGuards(AuthGuard)
+    // @UseGuards(AuthGuard)
     @Get('p')
     profile(@Req() req, @Res() res): any {
         return res.send({

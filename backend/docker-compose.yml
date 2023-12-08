@@ -1,0 +1,23 @@
+# contains shared configuration for various docker-compose files
+version: '3'
+services:
+  nest-app:
+    build: .
+    ports:
+      - 4000:3003
+    depends_on:
+      - mysql-db
+    # environment:
+    #   - PORT=3003
+    # env_file:
+    #   - ./.env
+  mysql-db:
+    image: mysql
+    volumes:
+      - mysql-db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nest_next_fullstack_1
+
+volumes:
+  mysql-db-data:

@@ -19,7 +19,7 @@ export class UsersService {
         }
 
         let where = {};
-        if (search.length > 1) {
+        if (search && search.length > 1) {
             where = {
                 firstName: {
                     [Op.like]: `%${search}%`
@@ -27,7 +27,7 @@ export class UsersService {
             }
         };
         return this.userModel.findAndCountAll({
-            attributes: ['id', 'firstName', 'lastName', 'email'],
+            attributes: ['id', 'firstName', 'lastName', 'email', 'createdAt',],
             raw: true,
             offset,
             limit: pageSize,
@@ -69,5 +69,21 @@ export class UsersService {
                 raw: true,
             }
         );
+    }
+
+    async deleteById(id: number): Promise<any> {
+        return this.userModel.destroy({
+            where: {
+                id,
+            },
+        });
+    }
+
+    async updateById(id: number, user: any): Promise<any> {
+        return this.userModel.update(user, {
+            where: {
+                id,
+            },
+        });
     }
 }
